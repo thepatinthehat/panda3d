@@ -309,9 +309,9 @@ scan_quoted_string(char quote_mark) {
 
 // scan_hex_string reads a string of hexadecimal digits delimited by
 // angle brackets and returns the representative string.
-static string
+static vector_uchar
 scan_hex_string() {
-  string result;
+  vector_uchar result;
 
   // We don't touch the current line number and column number during
   // scanning, so that if we detect an error while scanning the string
@@ -341,24 +341,24 @@ scan_hex_string() {
       line_number = line;
       col_number = col;
       dcyyerror("Invalid hex digit.");
-      return string();
+      return vector_uchar();
     }
 
     odd = !odd;
     if (odd) {
       last = value;
     } else {
-      result += (char)((last << 4) | value);
+      result.push_back((unsigned char)((last << 4) | value));
     }
     c = read_char(line, col);
   }
 
   if (c == EOF) {
     dcyyerror("This hex string is unterminated.");
-    return string();
+    return vector_uchar();
   } else if (odd) {
     dcyyerror("Odd number of hex digits.");
-    return string();
+    return vector_uchar();
   }
 
   line_number = line;
@@ -724,7 +724,7 @@ REALNUM              ([+-]?(([0-9]+[.])|([0-9]*[.][0-9]+))([eE][+-]?[0-9]+)?)
 [<] {
   // Long hex string.
   accept();
-  dcyylval.str = scan_hex_string();
+  dcyylval.bytes = scan_hex_string();
   return HEX_STRING;
 }
 

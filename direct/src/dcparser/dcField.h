@@ -53,13 +53,13 @@ PUBLISHED:
   virtual DCParameter *as_parameter();
   virtual const DCParameter *as_parameter() const;
 
-  string format_data(const string &packed_data, bool show_field_names = true);
-  string parse_string(const string &formatted_string);
+  string format_data(const vector_uchar &packed_data, bool show_field_names = true);
+  vector_uchar parse_string(const string &formatted_string);
 
-  bool validate_ranges(const string &packed_data) const;
+  bool validate_ranges(const vector_uchar &packed_data) const;
 
   INLINE bool has_default_value() const;
-  INLINE const string &get_default_value() const;
+  INLINE const vector_uchar &get_default_value() const;
 
   INLINE bool is_bogus_field() const;
 
@@ -98,7 +98,7 @@ public:
 
   INLINE void set_number(int number);
   INLINE void set_class(DCClass *dclass);
-  INLINE void set_default_value(const string &default_value);
+  INLINE void set_default_value(vector_uchar default_value);
 
 #ifdef HAVE_PYTHON
   static string get_pystr(PyObject *value);
@@ -115,7 +115,7 @@ protected:
   bool _bogus_field;
 
 private:
-  string _default_value;
+  vector_uchar _default_value;
 
 #ifdef WITHIN_PANDA
   PStatCollector _field_update_pcollector;

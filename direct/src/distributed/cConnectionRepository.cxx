@@ -887,7 +887,7 @@ describe_message(ostream &out, const string &prefix,
                  const Datagram &dg) const {
   DCPacker packer;
 
-  packer.set_unpack_data(dg.get_message());
+  packer.set_unpack_data((const char *)dg.get_data(), dg.get_length(), false);
   CHANNEL_TYPE do_id;
   int msg_type;
   bool is_update = false;
